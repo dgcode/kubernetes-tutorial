@@ -7,13 +7,13 @@ metadata:
     name: dashboard-ingress
 spec:
   rules:
-  - host: <Host>
+  - host: minikube-dashboard.com
     http:
       paths:
       - pathType: Prefix
         path: "/"
         backend:
           service:
-            name: <Service>
+            name: kubernetes-dashboard
             port: 
-              number: <Port>
+              number: 80
