@@ -1,0 +1,23 @@
+frontEnd:
+  name: mongo-express
+  image: mongo-express
+  version: latest
+
+frontEndService:
+  name: mongo-express-service
+  port: 8081
+  nodePort: 30000
+
+backEnd:
+  name: mongodb
+  image: mongo
+  version: latest
+
+backEndService:
+  name: mongodb-service
+  port: 27017
+
+secret:
+  mongodb:
+    username: cm9vdF91c2Vy
+    password: UGFzc3dvcmQxMjM0

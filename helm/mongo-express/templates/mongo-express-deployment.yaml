@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.frontEnd.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.frontEnd.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.frontEnd.name }}
+    spec:
+      containers:
+      - name: {{ .Values.frontEnd.name }}
+        image: {{ .Values.frontEnd.image }}:{{ .Values.frontEnd.version }}
+        ports:
+        - containerPort: 8081
+        env:
+          - name: ME_CONFIG_MONGODB_ADMINUSERNAME
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo-root-username
+          - name: ME_CONFIG_MONGODB_ADMINPASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo-root-password
+          - name: ME_CONFIG_MONGODB_SERVER
+            valueFrom:
+              configMapKeyRef:
+                name: mongodb-configmap
+                key: database_url
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.frontEndService.name }}
+spec:
+  selector:
+    app: {{ .Values.frontEnd.name }}
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: {{ .Values.frontEndService.port }}
+    targetPort: {{ .Values.frontEndService.port }}
+    nodePort: {{ .Values.frontEndService.nodePort }}
