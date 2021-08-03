@@ -8,6 +8,8 @@ spec:
       app: {{ .Values.frontEnd.name }}
   template:
     metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/mongodb-configmap.yaml") . | sha256sum }}
       labels:
         app: {{ .Values.frontEnd.name }}
     spec:
